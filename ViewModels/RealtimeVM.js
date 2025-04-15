@@ -3,6 +3,8 @@ import handleRefresh from "../Helpers/refreshHandler.js";
 
 const recordBtn = document.getElementById('recordBtn');
 const rtChart = document.getElementById('rtChart');
+const selectBtn = document.getElementById('selectBtn');
+
 const realtimeChart = chart.realtime(rtChart, () => {});
 
 const handleRecord = chart => {
@@ -25,8 +27,15 @@ recordBtn.addEventListener('click', (ev) => {
     const isPaused = handle();
     if (isPaused) {
         recordBtn.innerText = 'Начать запись'
+        selectBtn.classList.remove('invisible');
     } else {
         recordBtn.innerText = 'Остановить запись'
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
+        selectBtn.classList.add('invisible');
     }
+})
+
+
+selectBtn.addEventListener('click', () => {
+
 })

@@ -43,8 +43,7 @@ const chart = {
                                 duration: 0
                             }
                         }
-                    }
-                },
+                    },
                 plugins: {
                     zoom: {
                         zoom: {
@@ -62,6 +61,7 @@ const chart = {
                         }
                     },
                 }
+                },
             });
     },
     realtime: (element, refreshFunc) => {
