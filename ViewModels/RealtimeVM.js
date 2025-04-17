@@ -7,6 +7,12 @@ const selectBtn = document.getElementById('selectBtn');
 
 const realtimeChart = chart.realtime(rtChart, () => {});
 
+const annotation = {}
+let startX = 0;
+let endX = 0;
+let isHighlights = false;
+let isPaused =  true;
+
 const handleRecord = chart => {
     let isPaused = true;
     const handle = () => {
@@ -24,7 +30,7 @@ const handleRecord = chart => {
 const handle = handleRecord(realtimeChart);
 
 recordBtn.addEventListener('click', (ev) => {
-    const isPaused = handle();
+    isPaused = handle();
     if (isPaused) {
         recordBtn.innerText = 'Начать запись'
         selectBtn.classList.remove('invisible');
