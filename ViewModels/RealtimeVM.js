@@ -13,29 +13,19 @@ let endX = 0;
 let isHighlights = false;
 let isPaused =  true;
 
-const handleRecord = chart => {
-    let isPaused = true;
-    const handle = () => {
-        isPaused = !isPaused;
-        chart.options.scales.x.realtime.pause = !chart.options.scales.x.realtime.pause;
-        chart.options.scales.x.realtime.onRefresh = isPaused
+recordBtn.addEventListener('click', (ev) => {
+    isPaused = !isPaused;
+    realtimeChart.options.scales.x.realtime.paused = !isPaused
+    chart.options.scales.x.realtime.onRefresh = isPaused
             ? () => {}
             : handleRefresh;
-        chart.update('none');
-        return isPaused;
-    }
-    return handle;
-}
-
-const handle = handleRecord(realtimeChart);
-
-recordBtn.addEventListener('click', (ev) => {
-    isPaused = handle();
+    recordBtn.textContent = isPaused
+            ? 'Начать запись'
+            : 'Остановить запись';
     if (isPaused) {
-        recordBtn.innerText = 'Начать запись'
         selectBtn.classList.remove('invisible');
     } else {
-        recordBtn.innerText = 'Остановить запись'
+        delete annotation.annotations.box;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
     }
