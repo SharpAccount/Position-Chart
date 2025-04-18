@@ -30,7 +30,7 @@ recordBtn.addEventListener('click', (ev) => {
         selectBtn.classList.remove('invisible');
     } else {
         annotation.annotations.highlight = {};
-        isHighlights = !isHighlights;
+        isHighlights = false;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
     }
@@ -38,7 +38,7 @@ recordBtn.addEventListener('click', (ev) => {
 
 
 selectBtn.addEventListener('click', () => {
-    if (isHighlights) {
+    if (!isHighlights) {
         const xAxis = realtimeChart.scales.x;
         const yAxis = realtimeChart.scales.y;
 
@@ -55,5 +55,9 @@ selectBtn.addEventListener('click', () => {
             yMin: startYPosition,
             yMax: finishYPosition
         }
+        realtimeChart.options.plugins.annotation = annotation;
+        console.log(realtimeChart.options.plugins.annotation)
+        isHighlights = true;
+        realtimeChart.update();
     }
 })
