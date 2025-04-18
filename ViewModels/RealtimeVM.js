@@ -7,7 +7,11 @@ const selectBtn = document.getElementById('selectBtn');
 
 const realtimeChart = chart.realtime(rtChart, () => {});
 
-const annotation = {};
+const annotation = {
+    annotations: {
+        highlight: {}
+    }
+};
 let startX = 0;
 let endX = 0;
 let isHighlights = false;
@@ -15,8 +19,8 @@ let isPaused =  true;
 
 recordBtn.addEventListener('click', (ev) => {
     isPaused = !isPaused;
-    realtimeChart.options.scales.x.realtime.paused = !isPaused
-    chart.options.scales.x.realtime.onRefresh = isPaused
+    realtimeChart.options.scales.x.realtime.pause = isPaused
+    realtimeChart.options.scales.x.realtime.onRefresh = isPaused
             ? () => {}
             : handleRefresh;
     recordBtn.textContent = isPaused
@@ -25,7 +29,7 @@ recordBtn.addEventListener('click', (ev) => {
     if (isPaused) {
         selectBtn.classList.remove('invisible');
     } else {
-        delete annotation.annotations.box;
+        annotation.annotations.highlight = {};
         isHighlights = !isHighlights;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
