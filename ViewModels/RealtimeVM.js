@@ -53,10 +53,11 @@ selectBtn.addEventListener('click', () => {
             xMin: startXPosition,
             xMax: finishXPosition,
             yMin: startYPosition,
-            yMax: finishYPosition
+            yMax: finishYPosition,
+            backgroundColor: 'rgba(245,219,168,0.2)'
         }
         realtimeChart.options.plugins.annotation = annotation;
-        console.log(realtimeChart.options.plugins.annotation)
+        console.log(realtimeChart.options.plugins)
         isHighlights = true;
         realtimeChart.update();
     }

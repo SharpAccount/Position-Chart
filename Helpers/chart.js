@@ -11,6 +11,7 @@ import {
     Tooltip
 } from "chart.js";
 import Zoom from "chartjs-plugin-zoom";
+import Annotation from "chartjs-plugin-annotation";
 import 'chartjs-adapter-luxon'
 import {RealTimeScale, StreamingPlugin} from "chartjs-plugin-streaming";
 
@@ -76,7 +77,8 @@ const chart = {
             Title,
             Tooltip,
             Legend,
-            TimeScale
+            TimeScale,
+            Annotation
         );
 
         return new Chart(
