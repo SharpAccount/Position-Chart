@@ -7,28 +7,13 @@ const selectBtn = document.getElementById('selectBtn');
 
 const realtimeChart = chart.realtime(rtChart, () => {});
 
-const initialValue = {
+const annotation = {
     annotations: {
-        highlight: {
-            type: 'box',
-            xMin: null,
-            xMax: null,
-            yMin: null,
-            yMax: null,
-            backgroundColor: 'rgba(245,219,168,0.2)'
-        },
-        leftLimit: {
-            type: 'line',
-            xMin: null,
-            xMax: null,
-        },
-        rightLimit: {
-            type: 'line',
-            xMin: null,
-            xMax: null,
-        }
+        highlight: null,
+        leftLimit: null,
+        rightLimit: null
     }
-}, annotation = initialValue;
+};
 
 let startX = 0;
 let endX = 0;
@@ -47,14 +32,14 @@ recordBtn.addEventListener('click', (ev) => {
     if (isPaused) {
         selectBtn.classList.remove('invisible');
     } else {
-        annotation.annotations.highlight  = {};
-        annotation.annotations.leftLimit = {};
-        annotation.annotations.rightLimit = {};
+        annotation.annotations.highlight = null;
+        annotation.annotations.leftLimit= null;
+        annotation.annotations.rightLimit = null;
         isHighlights = false;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
     }
-})
+});
 
 
 selectBtn.addEventListener('click', () => {
