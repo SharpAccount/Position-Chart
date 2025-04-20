@@ -7,11 +7,29 @@ const selectBtn = document.getElementById('selectBtn');
 
 const realtimeChart = chart.realtime(rtChart, () => {});
 
-const annotation = {
+const initialValue = {
     annotations: {
-        highlight: {}
+        highlight: {
+            type: 'box',
+            xMin: null,
+            xMax: null,
+            yMin: null,
+            yMax: null,
+            backgroundColor: 'rgba(245,219,168,0.2)'
+        },
+        leftLimit: {
+            type: 'line',
+            xMin: null,
+            xMax: null,
+        },
+        rightLimit: {
+            type: 'line',
+            xMin: null,
+            xMax: null,
+        }
     }
-};
+}, annotation = initialValue;
+
 let startX = 0;
 let endX = 0;
 let isHighlights = false;
@@ -29,7 +47,9 @@ recordBtn.addEventListener('click', (ev) => {
     if (isPaused) {
         selectBtn.classList.remove('invisible');
     } else {
-        annotation.annotations.highlight = {};
+        annotation.annotations.highlight  = {};
+        annotation.annotations.leftLimit = {};
+        annotation.annotations.rightLimit = {};
         isHighlights = false;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
@@ -55,9 +75,18 @@ selectBtn.addEventListener('click', () => {
             yMin: startYPosition,
             yMax: finishYPosition,
             backgroundColor: 'rgba(245,219,168,0.2)'
+        };
+        annotation.annotations.leftLimit = {
+            type: 'line',
+            xMin: startXPosition,
+            xMax: startXPosition,
+        };
+        annotation.annotations.rightLimit = {
+            type: 'line',
+            xMin: finishXPosition,
+            xMax: finishXPosition,
         }
         realtimeChart.options.plugins.annotation = annotation;
-        console.log(realtimeChart.options.plugins)
         isHighlights = true;
         realtimeChart.update();
     }
