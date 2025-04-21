@@ -157,7 +157,13 @@ exportBtn.addEventListener('click', () => {
             });
 
         exportLink.href = URLcreator.create(datasets, fileTypes.json);
-        exportLink.download('data');
+        exportLink.download = 'data';
+        exportLink.click();
+    } else {
+        const datasets = JSON.stringify(realtimeChart.data);
+
+        exportLink.href = URLcreator.create(datasets, fileTypes.json);
+        exportLink.download = 'data';
         exportLink.click();
     }
 })
