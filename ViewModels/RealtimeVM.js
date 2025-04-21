@@ -49,7 +49,6 @@ recordBtn.addEventListener('click', (ev) => {
 selectBtn.addEventListener('click', () => {
     if (!isHighlights) {
         const xAxis = realtimeChart.scales.x;
-        const yAxis = realtimeChart.scales.y;
 
         const startXPosition = xAxis.getValueForPixel(0)+700;
         const startYPosition = max(realtimeChart.data.datasets);
@@ -114,4 +113,13 @@ rtChart.addEventListener('click', (ev) => {
 
         realtimeChart.update();
     }
+})
+
+rtChart.addEventListener('mousemove', (ev) => {
+    const chartRect = rtChart.getBoundingClientRect();
+    const posX = ev.clientX - chartRect.left;
+    const xAxis = realtimeChart.scales.x;
+    const valX = xAxis.getValueForPixel(posX);
+
+
 })
