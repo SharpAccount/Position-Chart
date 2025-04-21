@@ -1,8 +1,11 @@
 import chart from "../Helpers/chart.js";
 import handleRefresh from "../Helpers/refreshHandler.js";
 import {max, min} from "../Helpers/max.js";
+import URLcreator from "../Helpers/URLcreator.js";
+import fileTypes from "../consts/fileTypes.js";
 
 const exportLink = document.getElementById('exportLink');
+const exportBtn = document.getElementById('exportBtn');
 const recordBtn = document.getElementById('recordBtn');
 const selectBtn = document.getElementById('selectBtn');
 const rtChart = document.getElementById('rtChart');
@@ -142,3 +145,19 @@ rtChart.addEventListener('mousemove', (ev) => {
 
     realtimeChart.update('none');
 });
+
+exportBtn.addEventListener('click', () => {
+    if (isHighlights) {
+        const firstVal = Math.min(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
+        const lastVal = Math.max(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
+
+        const datasets = realtimeChart.data.datasets
+            .map(dataset => {
+                dataset.data.filter(coordinates => coordinates.x >= firstVal && coordinates.x <= lastVal)
+            });
+
+        exportLink.href = URLcreator.create(datasets, fileTypes.json);
+        exportLink.download('data');
+        exportLink.click();
+    }
+})
