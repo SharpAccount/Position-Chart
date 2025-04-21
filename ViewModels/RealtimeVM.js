@@ -15,9 +15,8 @@ const annotation = {
     }
 };
 
-let startX = 0;
-let endX = 0;
 let isHighlights = false;
+let isChanging = false;
 let isPaused =  true;
 
 recordBtn.addEventListener('click', (ev) => {
@@ -75,4 +74,21 @@ selectBtn.addEventListener('click', () => {
         isHighlights = true;
         realtimeChart.update();
     }
+});
+
+rtChart.addEventListener('click', (ev) => {
+    const chartRect = rtChart.getBoundingClientRect();
+    const posX = ev.clientX - chartRect.left;
+    const posY = ev.clientY - chartRect.top;
+
+    const xAxis = realtimeChart.scales.x;
+    const yAxis = realtimeChart.scales.y;
+
+    const valX = xAxis.getValueForPixel(posX);
+    const valY = yAxis.getValueForPixel(posY);
+
+    const leftHighlightBorder = realtimeChart.options.plugins.annotation.annotations.leftLimit.xMin;
+    const rightHighlightBorder = realtimeChart.options.plugins.annotation.annotations.rightLimit.xMin;
+
+    // if clientX +- in leftHighlightBorder or right...
 })
