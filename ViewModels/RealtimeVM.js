@@ -2,7 +2,7 @@ import chart from "../Helpers/chart.js";
 import handleRefresh from "../Helpers/refreshHandler.js";
 import {max, min} from "../Helpers/max.js";
 
-const exportBtn = document.getElementById('exportBtn');
+const exportLink = document.getElementById('exportLink');
 const recordBtn = document.getElementById('recordBtn');
 const selectBtn = document.getElementById('selectBtn');
 const rtChart = document.getElementById('rtChart');
