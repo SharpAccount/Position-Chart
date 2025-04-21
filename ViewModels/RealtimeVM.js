@@ -119,12 +119,6 @@ rtChart.addEventListener('click', (ev) => {
             }
         }
     }
-
-    if (Math.abs(valX - leftHighlightBorder) <= 1000) {
-
-    } else if (Math.abs(valX - rightHighlightBorder) <= 1000) {
-
-    }
 })
 
 rtChart.addEventListener('mousemove', (ev) => {
@@ -136,9 +130,12 @@ rtChart.addEventListener('mousemove', (ev) => {
     if (isChanging.leftBorder) {
         realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin = valX;
         realtimeChart.options.plugins.annotation.annotations.leftBorder.xMax = valX;
+        realtimeChart.options.plugins.annotation.annotations.highlight.xMin = valX;
     } else if (isChanging.rightBorder) {
         realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin = valX;
         realtimeChart.options.plugins.annotation.annotations.rightBorder.xMax = valX;
+        realtimeChart.options.plugins.annotation.annotations.highlight.xMax = valX;
     }
+
     realtimeChart.update('none');
 });
