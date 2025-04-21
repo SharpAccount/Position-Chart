@@ -1,5 +1,7 @@
 import chart from "../Helpers/chart.js";
 import handleRefresh from "../Helpers/refreshHandler.js";
+import "../Helpers/max.js";
+import {max, min} from "../Helpers/max.js";
 
 const recordBtn = document.getElementById('recordBtn');
 const rtChart = document.getElementById('rtChart');
@@ -49,31 +51,31 @@ selectBtn.addEventListener('click', () => {
         const xAxis = realtimeChart.scales.x;
         const yAxis = realtimeChart.scales.y;
 
-        const startXPosition = xAxis.getValueForPixel(0);
-        const startYPosition = yAxis.getValueForPixel(0);
+        const startXPosition = xAxis.getValueForPixel(0)+700;
+        const startYPosition = max(realtimeChart.data.datasets);
 
-        const finishXPosition = xAxis.getValueForPixel(realtimeChart.width);
-        const finishYPosition = yAxis.getValueForPixel(realtimeChart.height);
+        const finishXPosition = xAxis.getValueForPixel(realtimeChart.width)-700;
+        const finishYPosition = min(realtimeChart.data.datasets);
 
         annotation.annotations.highlight = {
             type: 'box',
-            xMin: startXPosition+2000,
-            xMax: finishXPosition-2000,
-            yMin: startYPosition-10,
-            yMax: finishYPosition+10,
+            xMin: startXPosition,
+            xMax: finishXPosition,
+            yMin: startYPosition,
+            yMax: finishYPosition,
             backgroundColor: 'rgba(245,219,168,0.2)',
             borderWidth: 0
         };
         annotation.annotations.leftBorder = {
             type: 'line',
-            xMin: startXPosition+2000,
-            xMax: startXPosition+2000,
+            xMin: startXPosition,
+            xMax: startXPosition,
             borderWidth: 2
         };
         annotation.annotations.rightBorder = {
             type: 'line',
-            xMin: finishXPosition-2000,
-            xMax: finishXPosition-2000,
+            xMin: finishXPosition,
+            xMax: finishXPosition,
             borderWidth: 2
         }
         realtimeChart.options.plugins.annotation = annotation;
