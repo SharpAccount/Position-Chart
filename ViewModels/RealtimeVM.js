@@ -10,13 +10,16 @@ const realtimeChart = chart.realtime(rtChart, () => {});
 const annotation = {
     annotations: {
         highlight: null,
-        leftLimit: null,
-        rightLimit: null
+        leftBorder: null,
+        rightBorder: null
     }
+};
+const isChanging = {
+    leftBorder: false,
+    rightBorder: false
 };
 
 let isHighlights = false;
-let isChanging = false;
 let isPaused =  true;
 
 recordBtn.addEventListener('click', (ev) => {
@@ -32,8 +35,8 @@ recordBtn.addEventListener('click', (ev) => {
         selectBtn.classList.remove('invisible');
     } else {
         annotation.annotations.highlight = null;
-        annotation.annotations.leftLimit= null;
-        annotation.annotations.rightLimit = null;
+        annotation.annotations.leftBorder= null;
+        annotation.annotations.rightBorder = null;
         isHighlights = false;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
@@ -58,17 +61,20 @@ selectBtn.addEventListener('click', () => {
             xMax: finishXPosition,
             yMin: startYPosition,
             yMax: finishYPosition,
-            backgroundColor: 'rgba(245,219,168,0.2)'
+            backgroundColor: 'rgba(245,219,168,0.2)',
+            borderWidth: 0
         };
-        annotation.annotations.leftLimit = {
+        annotation.annotations.leftBorder = {
             type: 'line',
             xMin: startXPosition,
             xMax: startXPosition,
+            borderWidth: 2
         };
-        annotation.annotations.rightLimit = {
+        annotation.annotations.rightBorder = {
             type: 'line',
             xMin: finishXPosition,
             xMax: finishXPosition,
+            borderWidth: 2
         }
         realtimeChart.options.plugins.annotation = annotation;
         isHighlights = true;
@@ -79,16 +85,24 @@ selectBtn.addEventListener('click', () => {
 rtChart.addEventListener('click', (ev) => {
     const chartRect = rtChart.getBoundingClientRect();
     const posX = ev.clientX - chartRect.left;
-    const posY = ev.clientY - chartRect.top;
 
     const xAxis = realtimeChart.scales.x;
-    const yAxis = realtimeChart.scales.y;
 
     const valX = xAxis.getValueForPixel(posX);
-    const valY = yAxis.getValueForPixel(posY);
 
-    const leftHighlightBorder = realtimeChart.options.plugins.annotation.annotations.leftLimit.xMin;
-    const rightHighlightBorder = realtimeChart.options.plugins.annotation.annotations.rightLimit.xMin;
+    const leftHighlightBorder = realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin;
+    const rightHighlightBorder = realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin;
 
-    // if clientX +- in leftHighlightBorder or right...
+    console.log(valX - leftHighlightBorder);
+    console.log(valX - rightHighlightBorder);
+
+    if (Math.abs(valX - leftHighlightBorder) <= 400) {
+        isChanging.leftBorder = true;
+        realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth = 5;
+        realtimeChart.update();
+    } else if (Math.abs(valX - rightHighlightBorder) <= 400) {
+        isChanging.rightBorder = true;
+        realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth = 5;
+        realtimeChart.update();
+    }
 })
