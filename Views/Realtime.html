@@ -15,6 +15,14 @@
         <canvas id="rtChart" class="chart" width="100%"></canvas>
         <button id="recordBtn">Начать трансляцию</button>
         <button id="selectBtn" class="invisible">Выбрать</button>
+        <div id="exportForm" class="invisible">
+            <button id="exportBtn">Экспортировать</button>
+            <label>Формат</label>
+            <select id="exportFormat">
+                <option value="json">.json</option>
+                <option value="csv">.csv</option>
+            </select>
+        </div>
     </div>
     <script type="module" src="../ViewModels/RealtimeVM.js"></script>
 </body>

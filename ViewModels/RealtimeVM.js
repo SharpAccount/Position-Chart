@@ -1,11 +1,12 @@
 import chart from "../Helpers/chart.js";
 import handleRefresh from "../Helpers/refreshHandler.js";
-import "../Helpers/max.js";
 import {max, min} from "../Helpers/max.js";
 
+const exportBtn = document.getElementById('exportBtn');
 const recordBtn = document.getElementById('recordBtn');
-const rtChart = document.getElementById('rtChart');
 const selectBtn = document.getElementById('selectBtn');
+const rtChart = document.getElementById('rtChart');
+const exportForm = document.getElementById('exportForm');
 
 const realtimeChart = chart.realtime(rtChart, () => {});
 
@@ -35,6 +36,7 @@ recordBtn.addEventListener('click', (ev) => {
             : 'Остановить запись';
     if (isPaused) {
         selectBtn.classList.remove('invisible');
+        exportForm.classList.remove('invisible');
     } else {
         annotation.annotations.highlight = null;
         annotation.annotations.leftBorder= null;
@@ -42,6 +44,7 @@ recordBtn.addEventListener('click', (ev) => {
         isHighlights = false;
         realtimeChart.data.datasets.forEach(dataset => dataset.data = []);
         selectBtn.classList.add('invisible');
+        exportForm.classList.add('invisible');
     }
 });
 
