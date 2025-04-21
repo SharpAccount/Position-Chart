@@ -91,22 +91,39 @@ rtChart.addEventListener('click', (ev) => {
     const leftHighlightBorder = realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin;
     const rightHighlightBorder = realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin;
 
+    const distanceFromLeftBorder = Math.abs(valX - leftHighlightBorder);
+    const distanceFromRightBorder = Math.abs(valX - rightHighlightBorder);
+
+    if (distanceFromLeftBorder <= 1000 || distanceFromRightBorder <= 1000) {
+        if (distanceFromLeftBorder > distanceFromRightBorder) {
+            isChanging.rightBorder = !isChanging.rightBorder;
+            realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth =
+                realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth === 5
+                    ? 2
+                    : 5;
+
+            if (isChanging.leftBorder) {
+                isChanging.leftBorder = false;
+                realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth = 2;
+            }
+        } else {
+            isChanging.leftBorder = !isChanging.leftBorder;
+            realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth =
+                realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth === 5
+                    ? 2
+                    : 5;
+
+            if (isChanging.rightBorder) {
+                isChanging.rightBorder = false;
+                realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth = 2;
+            }
+        }
+    }
+
     if (Math.abs(valX - leftHighlightBorder) <= 1000) {
-        isChanging.leftBorder = true;
-        realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth = 5;
 
-        if (isChanging.rightBorder) {
-            isChanging.rightBorder = false;
-            realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth = 2;
-        }
     } else if (Math.abs(valX - rightHighlightBorder) <= 1000) {
-        isChanging.rightBorder = true;
-        realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth = 5;
 
-        if (isChanging.leftBorder) {
-            isChanging.leftBorder = false;
-            realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth = 2;
-        }
     }
 })
 
@@ -117,11 +134,11 @@ rtChart.addEventListener('mousemove', (ev) => {
     const valX = xAxis.getValueForPixel(posX);
 
     if (isChanging.leftBorder) {
-        const offset = valX - realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin;
-        realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin += offset;
-        realtimeChart.options.plugins.annotation.annotations.leftBorder.xMax += offset;
+        realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin = valX;
+        realtimeChart.options.plugins.annotation.annotations.leftBorder.xMax = valX;
     } else if (isChanging.rightBorder) {
         realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin = valX;
         realtimeChart.options.plugins.annotation.annotations.rightBorder.xMax = valX;
     }
+    realtimeChart.update('none');
 });
