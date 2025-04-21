@@ -45,6 +45,21 @@ const chart = {
                             }
                         }
                     },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'millisecond',
+                                displayFormats: {
+                                    millisecond: 'HH:mm:ss.SSS'
+                                }
+                            },
+                            ticks: {
+                                source: 'data',
+                                autoSkip: true
+                            }
+                        }
+                    },
                 plugins: {
                     zoom: {
                         zoom: {
@@ -63,7 +78,8 @@ const chart = {
                     },
                 }
                 },
-            });
+            }
+        );
     },
     realtime: (element, refreshFunc) => {
         Chart.register(
