@@ -57,23 +57,23 @@ selectBtn.addEventListener('click', () => {
 
         annotation.annotations.highlight = {
             type: 'box',
-            xMin: startXPosition,
-            xMax: finishXPosition,
-            yMin: startYPosition,
-            yMax: finishYPosition,
+            xMin: startXPosition+2000,
+            xMax: finishXPosition-2000,
+            yMin: startYPosition-10,
+            yMax: finishYPosition+10,
             backgroundColor: 'rgba(245,219,168,0.2)',
             borderWidth: 0
         };
         annotation.annotations.leftBorder = {
             type: 'line',
-            xMin: startXPosition,
-            xMax: startXPosition,
+            xMin: startXPosition+2000,
+            xMax: startXPosition+2000,
             borderWidth: 2
         };
         annotation.annotations.rightBorder = {
             type: 'line',
-            xMin: finishXPosition,
-            xMax: finishXPosition,
+            xMin: finishXPosition-2000,
+            xMax: finishXPosition-2000,
             borderWidth: 2
         }
         realtimeChart.options.plugins.annotation = annotation;
@@ -85,24 +85,31 @@ selectBtn.addEventListener('click', () => {
 rtChart.addEventListener('click', (ev) => {
     const chartRect = rtChart.getBoundingClientRect();
     const posX = ev.clientX - chartRect.left;
-
     const xAxis = realtimeChart.scales.x;
-
     const valX = xAxis.getValueForPixel(posX);
 
     const leftHighlightBorder = realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin;
     const rightHighlightBorder = realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin;
 
-    console.log(valX - leftHighlightBorder);
-    console.log(valX - rightHighlightBorder);
-
-    if (Math.abs(valX - leftHighlightBorder) <= 400) {
+    if (Math.abs(valX - leftHighlightBorder) <= 1000) {
         isChanging.leftBorder = true;
         realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth = 5;
+
+        if (isChanging.rightBorder) {
+            isChanging.rightBorder = false;
+            realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth = 2;
+        }
+
         realtimeChart.update();
-    } else if (Math.abs(valX - rightHighlightBorder) <= 400) {
+    } else if (Math.abs(valX - rightHighlightBorder) <= 1000) {
         isChanging.rightBorder = true;
         realtimeChart.options.plugins.annotation.annotations.rightBorder.borderWidth = 5;
+
+        if (isChanging.leftBorder) {
+            isChanging.leftBorder = false;
+            realtimeChart.options.plugins.annotation.annotations.leftBorder.borderWidth = 2;
+        }
+
         realtimeChart.update();
     }
 })
