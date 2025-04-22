@@ -151,19 +151,21 @@ exportBtn.addEventListener('click', () => {
         const firstVal = Math.min(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
         const lastVal = Math.max(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
 
-        const datasets = realtimeChart.data.datasets
-            .map(dataset => {
-                dataset.data.filter(coordinates => coordinates.x >= firstVal && coordinates.x <= lastVal)
-            });
+        const filteredDatasets = realtimeChart.data.datasets.map(dataset => ({
+            ...dataset, // Сохраняем все свойства датасета
+            data: dataset.data.filter(coordinates =>
+                coordinates.x >= firstVal && coordinates.x <= lastVal
+            )
+        }));
 
-        exportLink.href = URLcreator.create(datasets, fileTypes.json);
+        const vals = JSON.stringify({ datasets: filteredDatasets });
+
+        exportLink.href = URLcreator.create(vals, fileTypes.json);
         exportLink.download = 'data';
-        exportLink.click();
     } else {
         const datasets = JSON.stringify(realtimeChart.data);
 
         exportLink.href = URLcreator.create(datasets, fileTypes.json);
         exportLink.download = 'data';
-        exportLink.click();
     }
 })
