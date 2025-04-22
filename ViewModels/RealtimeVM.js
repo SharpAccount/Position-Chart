@@ -3,6 +3,7 @@ import handleRefresh from "../Helpers/refreshHandler.js";
 import {max, min} from "../Helpers/max.js";
 import URLcreator from "../Helpers/URLcreator.js";
 import fileTypes from "../consts/fileTypes.js";
+import CSV from "../Helpers/CSV.js";
 
 const exportLink = document.getElementById('exportLink');
 const exportBtn = document.getElementById('exportBtn');
@@ -10,6 +11,7 @@ const recordBtn = document.getElementById('recordBtn');
 const selectBtn = document.getElementById('selectBtn');
 const rtChart = document.getElementById('rtChart');
 const exportForm = document.getElementById('exportForm');
+const exportFormat = document.getElementById('exportFormat');
 
 const realtimeChart = chart.realtime(rtChart, () => {});
 
@@ -148,24 +150,38 @@ rtChart.addEventListener('mousemove', (ev) => {
 
 exportBtn.addEventListener('click', () => {
     if (isHighlights) {
+        let vals;
+
         const firstVal = Math.min(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
         const lastVal = Math.max(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
 
         const filteredDatasets = realtimeChart.data.datasets.map(dataset => ({
-            ...dataset, // Сохраняем все свойства датасета
+            ...dataset,
             data: dataset.data.filter(coordinates =>
                 coordinates.x >= firstVal && coordinates.x <= lastVal
             )
         }));
 
-        const vals = JSON.stringify({ datasets: filteredDatasets });
+        if (exportFormat.value === 'json') {
+            vals = JSON.stringify({ datasets: filteredDatasets });
+            exportLink.href = URLcreator.create(vals, fileTypes.json);
+        } else {
+            vals = CSV.toCSV(filteredDatasets, ';');
+            exportLink.href = URLcreator.create(vals, fileTypes.csv);
+        }
 
-        exportLink.href = URLcreator.create(vals, fileTypes.json);
         exportLink.download = 'data';
     } else {
-        const datasets = JSON.stringify(realtimeChart.data);
+        let vals;
 
-        exportLink.href = URLcreator.create(datasets, fileTypes.json);
+        if (exportFormat.value === 'json') {
+            vals = JSON.stringify(realtimeChart.data);
+            exportLink.href = URLcreator.create(vals, fileTypes.json);
+        } else {
+            vals = CSV.toCSV(realtimeChart.data.datasets, ';');
+            exportLink.href = URLcreator.create(vals, fileTypes.csv);
+        }
+
         exportLink.download = 'data';
     }
 })
