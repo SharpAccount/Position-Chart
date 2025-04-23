@@ -4,6 +4,7 @@ import {max, min} from "../Helpers/max.js";
 import URLcreator from "../Helpers/URLcreator.js";
 import fileTypes from "../consts/fileTypes.js";
 import CSV from "../Helpers/CSV.js";
+import exportFile from "../Helpers/exportFile.js";
 
 const exportLink = document.getElementById('exportLink');
 const exportBtn = document.getElementById('exportBtn');
@@ -164,13 +165,11 @@ exportBtn.addEventListener('click', () => {
 
         if (exportFormat.value === 'json') {
             vals = JSON.stringify({ datasets: filteredDatasets });
-            exportLink.href = URLcreator.create(vals, fileTypes.json);
+            exportFile(exportLink, vals, fileTypes.csv);
         } else {
             vals = CSV.toCSV(filteredDatasets, ';');
-            exportLink.href = URLcreator.create(vals, fileTypes.csv);
+            exportFile(exportLink, vals, fileTypes.csv);
         }
-
-        exportLink.download = 'data';
     } else {
         let vals;
 

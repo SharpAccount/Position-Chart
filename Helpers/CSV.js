@@ -10,19 +10,22 @@ const CSV = {
                     label: 'Позиция x',
                     backgroundColor: "rgba(255, 0, 0, 1)",
                     borderColor: "rgba(255, 0, 0, 1)",
-                    data: []
+                    data: [],
+                    tension: 0.1,
                 },
                 {
                     label: 'Позиция y',
                     backgroundColor: "rgba(0, 255, 0, 1)",
                     borderColor: "rgba(0, 255, 0, 1)",
-                    data: []
+                    data: [],
+                    tension: 0.1,
                 },
                 {
                     label: 'Позиция z',
                     backgroundColor: "rgba(0, 0, 255, 1)",
                     borderColor: "rgba(0, 0, 255, 1)",
-                    data: []
+                    data: [],
+                    tension: 0.1,
                 },
             ]
         }
