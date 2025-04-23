@@ -1,12 +1,10 @@
 import chart from "../Helpers/chart.js";
-import handleRefresh from "../Helpers/refreshHandler.js";
-import {max, min} from "../Helpers/max.js";
-import URLcreator from "../Helpers/URLcreator.js";
 import fileTypes from "../consts/fileTypes.js";
 import CSV from "../Helpers/CSV.js";
+import handleRefresh from "../Helpers/refreshHandler.js";
 import exportFile from "../Helpers/exportFile.js";
+import {max, min} from "../Helpers/max.js";
 
-const exportLink = document.getElementById('exportLink');
 const exportBtn = document.getElementById('exportBtn');
 const recordBtn = document.getElementById('recordBtn');
 const selectBtn = document.getElementById('selectBtn');
@@ -150,9 +148,8 @@ rtChart.addEventListener('mousemove', (ev) => {
 });
 
 exportBtn.addEventListener('click', () => {
+    let vals;
     if (isHighlights) {
-        let vals;
-
         const firstVal = Math.min(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
         const lastVal = Math.max(realtimeChart.options.plugins.annotation.annotations.leftBorder.xMin, realtimeChart.options.plugins.annotation.annotations.rightBorder.xMin);
 
@@ -165,22 +162,18 @@ exportBtn.addEventListener('click', () => {
 
         if (exportFormat.value === 'json') {
             vals = JSON.stringify({ datasets: filteredDatasets });
-            exportFile(exportLink, vals, fileTypes.csv);
+            exportFile(exportLink, vals, fileTypes.json);
         } else {
             vals = CSV.toCSV(filteredDatasets, ';');
             exportFile(exportLink, vals, fileTypes.csv);
         }
     } else {
-        let vals;
-
         if (exportFormat.value === 'json') {
             vals = JSON.stringify(realtimeChart.data);
-            exportLink.href = URLcreator.create(vals, fileTypes.json);
+            exportFile(exportLink, vals, fileTypes.json);
         } else {
             vals = CSV.toCSV(realtimeChart.data.datasets, ';');
-            exportLink.href = URLcreator.create(vals, fileTypes.csv);
+            exportFile(exportLink, vals, fileTypes.csv);
         }
-
-        exportLink.download = 'data';
     }
 })

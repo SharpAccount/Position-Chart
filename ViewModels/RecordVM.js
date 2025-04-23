@@ -1,12 +1,15 @@
 import timeHandler from "../Helpers/timer.js";
 import handleRefresh from "../Helpers/refreshHandler.js";
+import exportFile from "../Helpers/exportFile.js";
+import fileTypes from "../consts/fileTypes.js";
+import CSV from "../Helpers/CSV.js";
 
-const recordBtn = document.getElementById('recordBtn');
+const exportLink = document.getElementById('exportLink');
 const time = document.getElementById('time');
+const recordBtn = document.getElementById('recordBtn');
 const exportBtn = document.getElementById('exportBtn');
 const exportForm = document.getElementById('exportForm');
 const exportFormat = document.getElementById('exportFormat');
-
 
 const recorded = {
     data: {
@@ -38,19 +41,23 @@ const recorded = {
 
 const record = {
     interval: null,
+    timer: null,
     isRecording: false,
     start: function() {
         this.isRecording = true;
-        this.interval = setInterval(() => {
+        this.timer = setInterval(() => {
             time.innerText = timeHandler.addSecond();
-            handleRefresh(recorded);
         }, 1000);
+        this.interval = setInterval(() => {
+            handleRefresh(recorded);
+        }, 100);
     },
     stop: function() {
         this.isRecording = false;
         time.innerText = timeHandler.clearTime();
         clearInterval(this.interval);
-        console.log(recorded);
+        clearInterval(this.timer);
+        console.log(recorded)
     }
 }
 
@@ -67,10 +74,12 @@ recordBtn.addEventListener('click', () => {
 });
 
 exportBtn.addEventListener('click', () => {
-    if (exportFormat.selectedIndex === 0) {
-
+    let vals;
+    if (exportFormat.value === 'json') {
+        vals = JSON.stringify(recorded.data);
+        exportFile(exportLink, vals, fileTypes.json);
     } else {
-
+        vals = CSV.toCSV(recorded.data.datasets, ';');
+        exportFile(exportLink, vals, fileTypes.csv);
     }
-    //export func
 })
