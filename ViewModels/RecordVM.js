@@ -57,7 +57,6 @@ const record = {
         time.innerText = timeHandler.clearTime();
         clearInterval(this.interval);
         clearInterval(this.timer);
-        console.log(recorded)
     }
 }
 
