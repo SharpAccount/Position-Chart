@@ -1,24 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <link rel="stylesheet" href="../main.css"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Импорт данных</title>
+    <link rel="stylesheet" href="../main.css"/>
 </head>
 <body>
-    <div id="app">
-        <nav>
-            <a href="Realtime.html">Трансляция</a>
-            <a href="Record.html">Запись</a>
-            <a href="">Импорт</a>
-        </nav>
-        <h1 id="nothingReport" class="visible">Пока нечего отображать</h1>
-        <canvas id="lnChart" class="invisible chart" width="100%"></canvas>
-        <label id="importBtn">
-            <input type="file" id="chartInpt" accept="text/csv,application/json"/>
-            Импорт (.json, .csv)
-        </label>
-    </div>
-    <script type="module" src="../ViewModels/ImportVM.js"></script>
+<div id="app">
+    <nav>
+        <a href="Realtime.html">Трансляция</a>
+        <a href="Record.html">Запись</a>
+        <a href="Import.html">Импорт</a>
+    </nav>
+
+    <h1 id="nothingReport" class="visible">Пока нечего отображать</h1>
+    <canvas id="lnChart" class="invisible chart" width="100%" height="400"></canvas>
+    <label id="importBtn">
+        <input type="file" id="chartInpt" accept="text/csv,application/json"/>
+        Импорт (.json, .csv)
+    </label>
+</div>
+
+<script src="../libs/chart.js/dist/chart.js"></script>
+<script>
+    if (!Chart.helpers) {
+        Chart.helpers = Chart._adapters._date;
+    }
+</script>
+<script src="../libs/hammerjs/hammer.js"></script>
+<script src="../libs/luxon/build/global/luxon.js"></script>
+<script src="../libs/chartjs-adapter-luxon/dist/chartjs-adapter-luxon.umd.js"></script>
+<script src="../libs/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.js"></script>
+
+<script src="../Helpers/loader.js"></script>
+<script src="../Helpers/refreshHandler.js"></script>
+<script src="../Helpers/exportFile.js"></script>
+<script src="../Helpers/CSV.js"></script>
+
+<script src="../consts/fileTypes.js"></script>
+<script src="../Helpers/chart.js"></script>
+<script src="../Helpers/loader.js"></script>
+<script src="../Helpers/loader.js"></script>
+<script src="../ViewModels/ImportVM.js"></script>
+<script>
+    loadScripts([
+        '../libs/chart.js/dist/chart.js',
+        '../libs/hammerjs/hammer.js',
+        '../libs/luxon/build/global/luxon.js',
+        '../libs/chartjs-adapter-luxon/dist/chartjs-adapter-luxon.umd.js',
+        '../libs/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.js',
+        '../Helpers/refreshHandler.js',
+        '../Helpers/exportFile.js',
+        '../consts/fileTypes.js',
+        '../Helpers/CSV.js',
+        '../Helpers/max.js',
+        '../Helpers/chart.js',
+        '../ViewModels/ImportVM.js'
+    ]);
+</script>
 </body>
 </html>

@@ -1,31 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <link rel="stylesheet" href="../main.css"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Трансляция</title>
+    <link rel="stylesheet" href="../main.css"/>
 </head>
 <body>
-    <div id="app">
-        <nav>
-            <a href="Realtime.html">Трансляция</a>
-            <a href="Record.html">Запись</a>
-            <a href="Import.html">Импорт</a>
-        </nav>
-        <canvas id="rtChart" class="chart" width="100%"></canvas>
-        <button id="recordBtn">Начать трансляцию</button>
-        <button id="selectBtn" class="invisible">Выбрать</button>
-        <div id="exportForm" class="invisible">
-            <button id="exportBtn">
-                <a id="exportLink">Экспортировать</a>
-            </button>
-            <label>Формат</label>
-            <select id="exportFormat">
-                <option value="json">.json</option>
-                <option value="csv">.csv</option>
-            </select>
-        </div>
+<div id="app">
+    <nav>
+        <a href="Realtime.html">Трансляция</a>
+        <a href="Record.html">Запись</a>
+        <a href="Import.html">Импорт</a>
+    </nav>
+
+    <canvas id="rtChart" class="chart" width="100%"></canvas>
+    <button id="recordBtn">Начать трансляцию</button>
+    <button id="selectBtn" class="invisible">Выбрать</button>
+    <div id="exportForm" class="invisible">
+        <button id="exportBtn">
+            <a id="exportLink">Экспортировать</a>
+        </button>
+        <label>Формат</label>
+        <select id="exportFormat">
+            <option value="json">.json</option>
+            <option value="csv">.csv</option>
+        </select>
     </div>
-    <script type="module" src="../ViewModels/RealtimeVM.js"></script>
+</div>
+
+
+
+<script src="../libs/chart.js/dist/chart.js"></script>
+<script>
+    if (!Chart.helpers) {
+        // в v3 все date-адаптеры лежат в _adapters._date
+        Chart.helpers = Chart._adapters._date;
+    }
+</script>
+<script src="../libs/hammerjs/hammer.js"></script>
+<script src="../libs/luxon/build/global/luxon.js"></script>
+<script src="../libs/chartjs-adapter-luxon/dist/chartjs-adapter-luxon.umd.js"></script>
+<script src="../libs/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.js"></script>
+<script src="../libs/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.js"></script>
+<script src="../libs/chartjs-plugin-streaming/dist/chartjs-plugin-streaming.js"></script>
+
+<script src="../Helpers/loader.js"></script>
+<script src="../Helpers/refreshHandler.js"></script>
+<script src="../Helpers/exportFile.js"></script>
+<script src="../Helpers/CSV.js"></script>
+
+<script src="../consts/fileTypes.js"></script>
+<script src="../Helpers/chart.js"></script>
+<script src="../ViewModels/RealtimeVM.js"></script>
+<script>
+    loadScripts([
+        '../libs/chart.js/dist/chart.js',
+        '../libs/hammerjs/hammer.js',
+        '../libs/luxon/build/global/luxon.js',
+        '../libs/chartjs-adapter-luxon/dist/chartjs-adapter-luxon.umd.js',
+        '../libs/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.js',
+        '../libs/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.js',
+        '../libs/chartjs-plugin-streaming/dist/chartjs-plugin-streaming.js',
+        '../Helpers/refreshHandler.js',
+        '../Helpers/exportFile.js',
+        '../consts/fileTypes.js',
+        '../Helpers/CSV.js',
+        '../Helpers/max.js',
+        '../Helpers/chart.js',
+        '../ViewModels/RealtimeVM.js'
+    ]);
+</script>
 </body>
 </html>
