@@ -1,18 +1,14 @@
-const max = (datasets) => {
-    const maxes = [];
-    datasets.forEach(dataset => {
-        const data = dataset.data;
-        maxes.push(Math.max(...data));
-    })
-    return Math.max(...maxes);
-};
-const min = (datasets) => {
-    const maxes = [];
-    datasets.forEach(dataset => {
-        const data = dataset.data;
-        maxes.push(Math.min(...data));
-    })
-    return Math.min(...maxes);
-};
-
-export {max, min}
+(function(global){
+    function max(datasets) {
+        return Math.max.apply(null,
+            datasets.map(function(ds){ return Math.max.apply(null, ds.data.map(function(pt){ return pt.y; })); })
+        );
+    }
+    function min(datasets) {
+        return Math.min.apply(null,
+            datasets.map(function(ds){ return Math.min.apply(null, ds.data.map(function(pt){ return pt.y; })); })
+        );
+    }
+    global.max = max;
+    global.min = min;
+})(window);

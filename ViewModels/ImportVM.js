@@ -1,39 +1,39 @@
-import chart from '../Helpers/chart.js'
-import CSV from "../Helpers/CSV.js";
-import fileTypes from "../consts/fileTypes.js";
+// ViewModels/ImportVM.js
+(function(window){
+    document.addEventListener('DOMContentLoaded', function(){
+        var importForm     = document.getElementById('chartInpt');
+        var lnChartEl      = document.getElementById('lnChart');
+        var nothingReport  = document.getElementById('nothingReport');
+        var reader = new FileReader();
+        var currentChart   = null;
 
-const importForm = document.getElementById('chartInpt');
-const lnChart = document.getElementById('lnChart');
-const nothingReport = document.getElementById('nothingReport');
+        importForm.addEventListener('input', function(ev){
+            var file = ev.target.files[0];
+            if (!file) return;
 
-const reader = new FileReader();
+            reader.onload = function(loadEvt){
+                var content = loadEvt.target.result;
+                var data;
+                if (file.type === window.fileTypes.json) {
+                    data = JSON.parse(content);
+                } else {
+                    data = window.CSV.parse(content, ';');
+                }
 
-let currentChart = null;
-let data = {};
-
-const showChart = (event) => {
-    const res = event.target.files[0];
-    reader.addEventListener(
-        "load",
-        () => {
-            if (res.type === fileTypes.json) {
-                data = JSON.parse(reader.result);
-            } else {
-                data = CSV.parse(reader.result, ';');
-            }
-
-            if (currentChart) {
-                currentChart.data = data;
-            } else {
-                currentChart = chart.linear(lnChart, data);
                 nothingReport.classList.remove('visible');
                 nothingReport.classList.add('invisible');
-            }
-            currentChart.update()
-        },
-        false,
-    );
-    reader.readAsText(res);
-}
+                lnChartEl.classList.remove('invisible');
+                lnChartEl.classList.add('visible');
 
-importForm.addEventListener('input', showChart);
+                if (currentChart) {
+                    currentChart.data = data;
+                    currentChart.update();
+                } else {
+                    currentChart = window.chart.linear(lnChartEl, data);
+                }
+            };
+
+            reader.readAsText(file);
+        });
+    });
+})(window);
